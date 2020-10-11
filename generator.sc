@@ -35,7 +35,7 @@ fn escape-pattern (str)
         filter
             (x) -> (x != -1)
         UTF-8.encoder
-        string.collector 4096
+        string.collector 256
 
 inline gen-symbol-match (kind)
     let result =
