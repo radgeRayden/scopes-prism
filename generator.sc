@@ -1,4 +1,4 @@
-using import .radlib.stringtools
+using import radl.strfmt slice
 let symbols = (import .scopes-std-symbols.symbols)
 
 import UTF-8
@@ -9,23 +9,23 @@ fn escape-pattern (str)
         retain
             inline (c)
                 switch c
-                pass (UTF-8.char "[")
-                pass (UTF-8.char "]")
-                pass (UTF-8.char "\\")
-                pass (UTF-8.char "/")
-                pass (UTF-8.char "^")
-                pass (UTF-8.char "$")
-                pass (UTF-8.char ".")
-                pass (UTF-8.char "|")
-                pass (UTF-8.char "?")
-                pass (UTF-8.char "*")
-                pass (UTF-8.char "+")
-                pass (UTF-8.char "(")
-                pass (UTF-8.char ")")
-                pass (UTF-8.char "{")
-                pass (UTF-8.char "}")
+                pass char"["
+                pass char"]"
+                pass char"\\"
+                pass char"/"
+                pass char"^"
+                pass char"$"
+                pass char"."
+                pass char"|"
+                pass char"?"
+                pass char"*"
+                pass char"+"
+                pass char"("
+                pass char")"
+                pass char"{"
+                pass char"}"
                 do
-                    UTF-8.char "\\"
+                    UTF-8.char32 "\\"
                 default
                     -1
             map
@@ -39,7 +39,7 @@ fn escape-pattern (str)
 
 inline gen-symbol-match (kind)
     let result =
-        fold (result = "") for k v in (getattr symbols kind)
+        fold (result = str"") for k v in (getattr symbols kind)
             .. (escape-pattern (v as string)) "|" result
     let result = (lslice result ((countof result) - 1))
     .. "/(^|[,'()\\[\\]{} ])(?:" result ")(?=$|[,'()\\[\\]{} ])/gm"

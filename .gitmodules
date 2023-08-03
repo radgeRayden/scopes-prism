@@ -1,6 +1,3 @@
 [submodule "scopes-std-symbols"]
 	path = scopes-std-symbols
 	url = git@github.com:radgeRayden/scopes-std-symbols.git
-[submodule "radlib"]
-	path = radlib
-	url = git@github.com:radgeRayden/radlib.git
