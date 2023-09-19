@@ -1,4 +1,4 @@
-using import radl.strfmt slice
+using import radl.strfmt slice String
 let symbols = (import .scopes-std-symbols.symbols)
 
 import UTF-8
@@ -44,14 +44,21 @@ inline gen-symbol-match (kind)
     let result = (lslice result ((countof result) - 1))
     .. "/(^|[,'()\\[\\]{} ])(?:" result ")(?=$|[,'()\\[\\]{} ])/gm"
 
+let name argc argv = (script-launch-args)
+let export-name =
+    if ((argc > 0) and (('from-rawstring String (argv @ 0)) == "-nodemode"))
+        S"module.exports"
+    else
+        S"Prism.languages.scopes"
+
 vvv io-write!
-f""""Prism.languages.scopes = {
+f""""${export-name} = {
          'comment': [
              {
                  pattern: /^(?<pad> *)#.*(?:\n|$)(?: (?=\k<pad>).+(?:\n|$))*/gm
              },
              {
-                 pattern: /#.*$/
+                 pattern: /#.*?(?=(\n|$))/
              }
          ],
          'string': [
